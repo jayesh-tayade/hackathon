@@ -9,6 +9,7 @@ import TaskModal from "@/components/tasks/TaskModal";
 import { Button } from "@/components/ui/button";
 import { useTasks } from "@/hooks/useTasks";
 import FutureConsequenceCard from "@/components/ai/FutureConsequenceCard";
+import DeadlineCrashCard from "@/components/ai/DeadlineCrashCard";
 import { generateAIResponse } from "@/services/aiService";
 
 export default function Dashboard() {
@@ -19,6 +20,8 @@ export default function Dashboard() {
   const [submitting, setSubmitting] = useState(false);
   const [futureLoading, setFutureLoading] = useState(false);
   const [futureResult, setFutureResult] = useState(null);
+  const [deadlineCrashLoading, setDeadlineCrashLoading] = useState(false);
+  const [deadlineCrashResult, setDeadlineCrashResult] = useState(null);
 
   const openCreateModal = () => {
     setEditingTask(null);
@@ -58,6 +61,17 @@ export default function Dashboard() {
     }
   };
 
+  const handleDeadlineCrashAnalysis = async () => {
+    setDeadlineCrashLoading(true);
+  
+    try {
+      const result = await generateAIResponse("deadline-crash", tasks);
+      setDeadlineCrashResult(result);
+    } finally {
+      setDeadlineCrashLoading(false);
+    }
+  };
+
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <WelcomeCard />
@@ -81,6 +95,11 @@ export default function Dashboard() {
             loading={futureLoading}
             result={futureResult}
             onAnalyze={handleFutureAnalysis}
+          />
+          <DeadlineCrashCard
+            loading={deadlineCrashLoading}
+            result={deadlineCrashResult}
+            onAnalyze={handleDeadlineCrashAnalysis}
           />
         </div>
       </div>

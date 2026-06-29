@@ -7,6 +7,13 @@
 import { analyzeTasks } from "../utils/taskAnalyzer.js";
 import { generateGeminiResponse } from "./gemini.js";
 import { buildFutureConsequencePrompt } from "../prompts/futureConsequencePrompt.js";
+import { buildDeadlineCrashPrompt } from "../prompts/deadlineCrashPrompt.js";
+
+
+const PROMPT_BUILDERS = {
+  "future-consequence": buildFutureConsequencePrompt,
+  "deadline-crash": buildDeadlineCrashPrompt,
+};
 
 /**
  * Returns the appropriate prompt string for the given feature.
@@ -17,10 +24,13 @@ import { buildFutureConsequencePrompt } from "../prompts/futureConsequencePrompt
  * @throws {Error} If the feature has no prompt implementation.
  */
 function getPrompt(featureName, analysis) {
-  if (featureName === "future-consequence") {
-    return buildFutureConsequencePrompt(analysis);
+  const builder = PROMPT_BUILDERS[featureName];
+
+  if (!builder) {
+    throw new Error(`Feature prompt not implemented: ${featureName}`);
   }
-  throw new Error("Feature prompt not implemented.");
+
+  return builder(analysis);
 }
 
 /**
@@ -73,9 +83,9 @@ export async function generateAIResponse(featureName, tasks) {
   }
 
   // --- Step 3: Call Gemini ---
-  let response;
+  let rawResponse;
   try {
-    response = await generateGeminiResponse(prompt);
+    rawResponse = await generateGeminiResponse(prompt);
   } catch (geminiError) {
     return {
       success: false,
@@ -86,11 +96,26 @@ export async function generateAIResponse(featureName, tasks) {
     };
   }
 
+  // --- Step 3b: Parse JSON response ---
+  let parsedResponse;
+  
+  try {
+    parsedResponse = JSON.parse(rawResponse);
+  } catch (parseError) {
+    return {
+      success: false,
+      feature,
+      analysis,
+      response: null,
+      error: `Invalid JSON returned by Gemini: ${parseError.message}`,
+    };
+  }
+
   // --- Step 4: Return structured result ---
-  return {
-    success: true,
-    feature,
-    analysis,
-    response,
-  };
+    return {
+        success: true,
+        feature,
+        analysis,
+        response: parsedResponse,
+    };
 }
