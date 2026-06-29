@@ -102,14 +102,14 @@ export default function DeadlineCrashCard({ loading = false, result = null, onAn
       : null;
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+    <div className="overflow-hidden rounded-2xl border border-border bg-card text-foreground shadow-sm">
       {/* ── Header ── */}
-      <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+      <div className="flex items-center justify-between border-b border-border px-6 py-5">
         <div className="flex items-center gap-3">
           {/* Icon */}
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-red-50">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-red-100 dark:bg-red-950">
             <svg
-              className="h-5 w-5 text-red-500"
+              className="h-5 w-5 text-red-600 dark:text-red-300"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -123,10 +123,10 @@ export default function DeadlineCrashCard({ loading = false, result = null, onAn
             </svg>
           </div>
           <div>
-            <h2 className="text-sm font-semibold text-gray-900 leading-tight">
+            <h2 className="text-sm font-semibold leading-tight text-foreground">
               Deadline Crash Predictor
             </h2>
-            <p className="text-xs text-gray-400 mt-0.5">
+            <p className="mt-0.5 text-xs text-muted-foreground">
               AI-powered crash risk assessment
             </p>
           </div>
@@ -139,8 +139,8 @@ export default function DeadlineCrashCard({ loading = false, result = null, onAn
           className={[
             "inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-all duration-150",
             loading
-              ? "cursor-not-allowed bg-red-50 text-red-300"
-              : "bg-red-600 text-white hover:bg-red-700 active:scale-95 shadow-sm",
+            ? "bg-destructive text-white opacity-90 cursor-not-allowed shadow-sm"
+            : "bg-red-600 text-white hover:bg-red-700 active:scale-95 shadow-sm",
           ].join(" ")}
         >
           {loading ? (
@@ -190,8 +190,8 @@ export default function DeadlineCrashCard({ loading = false, result = null, onAn
       {/* ── Loading state ── */}
       {loading && (
         <div className="flex flex-col items-center justify-center gap-3 px-6 py-12 text-center">
-          <div className="h-8 w-8 rounded-full border-2 border-red-200 border-t-red-500 animate-spin" />
-          <p className="text-sm text-gray-400">Running crash risk analysis…</p>
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-red-300 border-t-red-600 dark:border-red-900 dark:border-t-red-300" />
+          <p className="text-sm text-muted-foreground">Running crash risk analysis…</p>
         </div>
       )}
 
@@ -208,9 +208,9 @@ export default function DeadlineCrashCard({ loading = false, result = null, onAn
       {/* ── Empty state ── */}
       {!loading && !result && (
         <div className="flex flex-col items-center justify-center gap-2 px-6 py-12 text-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gray-50">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-muted">
             <svg
-              className="h-6 w-6 text-gray-300"
+              className="h-6 w-6 text-muted-foreground"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -223,9 +223,9 @@ export default function DeadlineCrashCard({ loading = false, result = null, onAn
               <line x1="12" y1="17" x2="12.01" y2="17" />
             </svg>
           </div>
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-muted-foreground">
             Click{" "}
-            <span className="font-medium text-gray-600">Analyze My Future</span>{" "}
+            <span className="font-medium text-foreground">Analyze My Future</span>{" "}
             to predict your deadline crash risk.
           </p>
         </div>
@@ -233,7 +233,7 @@ export default function DeadlineCrashCard({ loading = false, result = null, onAn
 
       {/* ── Result ── */}
       {!loading && parsed && (
-        <div className="divide-y divide-gray-100">
+        <div className="divide-y divide-border">
 
           {/* 1. Crash Risk */}
           <div className="flex items-center justify-between px-6 py-4">
@@ -257,7 +257,7 @@ export default function DeadlineCrashCard({ loading = false, result = null, onAn
           {parsed.summary && (
             <div className="px-6 py-4">
               <SectionLabel>Summary</SectionLabel>
-              <p className="text-sm text-gray-700 leading-relaxed">{parsed.summary}</p>
+              <p className="text-sm leading-relaxed text-foreground">{parsed.summary}</p>
             </div>
           )}
 
@@ -288,9 +288,9 @@ export default function DeadlineCrashCard({ loading = false, result = null, onAn
             <div className="px-6 py-4">
               <div className="flex items-center justify-between mb-2">
                 <SectionLabel>Confidence</SectionLabel>
-                <span className="text-xs font-semibold text-gray-500">{confidence}%</span>
+                <span className="text-xs font-semibold text-muted-foreground">{confidence}%</span>
               </div>
-              <div className="h-1.5 w-full rounded-full bg-gray-100 overflow-hidden">
+              <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
                 <div
                   className="h-full rounded-full bg-red-500 transition-all duration-500"
                   style={{ width: `${confidence}%` }}

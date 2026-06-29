@@ -8,20 +8,17 @@ import WelcomeCard from "@/components/dashboard/WelcomeCard";
 import TaskModal from "@/components/tasks/TaskModal";
 import { Button } from "@/components/ui/button";
 import { useTasks } from "@/hooks/useTasks";
-import FutureConsequenceCard from "@/components/ai/FutureConsequenceCard";
-import DeadlineCrashCard from "@/components/ai/DeadlineCrashCard";
-import { generateAIResponse } from "@/services/aiService";
+
+
 
 export default function Dashboard() {
   const { tasks, loading, addTask, editTask, removeTask, completeTask } =
     useTasks();
+
   const [modalOpen, setModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const [submitting, setSubmitting] = useState(false);
-  const [futureLoading, setFutureLoading] = useState(false);
-  const [futureResult, setFutureResult] = useState(null);
-  const [deadlineCrashLoading, setDeadlineCrashLoading] = useState(false);
-  const [deadlineCrashResult, setDeadlineCrashResult] = useState(null);
+
 
   const openCreateModal = () => {
     setEditingTask(null);
@@ -51,26 +48,7 @@ export default function Dashboard() {
     await removeTask(taskId);
   };
 
-  const handleFutureAnalysis = async () => {
-    setFutureLoading(true);
-    try {
-      const result = await generateAIResponse("future-consequence", tasks);
-      setFutureResult(result);
-    } finally {
-      setFutureLoading(false);
-    }
-  };
 
-  const handleDeadlineCrashAnalysis = async () => {
-    setDeadlineCrashLoading(true);
-  
-    try {
-      const result = await generateAIResponse("deadline-crash", tasks);
-      setDeadlineCrashResult(result);
-    } finally {
-      setDeadlineCrashLoading(false);
-    }
-  };
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
@@ -85,22 +63,16 @@ export default function Dashboard() {
             onEdit={openEditModal}
             onDelete={handleDelete}
           />
+
           <UpcomingDeadlines tasks={tasks} loading={loading} />
         </div>
 
         <div className="space-y-6">
           <ProductivityScore />
+
           <AISummary />
-          <FutureConsequenceCard
-            loading={futureLoading}
-            result={futureResult}
-            onAnalyze={handleFutureAnalysis}
-          />
-          <DeadlineCrashCard
-            loading={deadlineCrashLoading}
-            result={deadlineCrashResult}
-            onAnalyze={handleDeadlineCrashAnalysis}
-          />
+
+
         </div>
       </div>
 
