@@ -8,6 +8,8 @@ import WelcomeCard from "@/components/dashboard/WelcomeCard";
 import TaskModal from "@/components/tasks/TaskModal";
 import { Button } from "@/components/ui/button";
 import { useTasks } from "@/hooks/useTasks";
+import FutureConsequenceCard from "@/components/ai/FutureConsequenceCard";
+import { generateAIResponse } from "@/services/aiService";
 
 export default function Dashboard() {
   const { tasks, loading, addTask, editTask, removeTask, completeTask } =
@@ -15,6 +17,8 @@ export default function Dashboard() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const [futureLoading, setFutureLoading] = useState(false);
+  const [futureResult, setFutureResult] = useState(null);
 
   const openCreateModal = () => {
     setEditingTask(null);
@@ -44,6 +48,16 @@ export default function Dashboard() {
     await removeTask(taskId);
   };
 
+  const handleFutureAnalysis = async () => {
+    setFutureLoading(true);
+    try {
+      const result = await generateAIResponse("future-consequence", tasks);
+      setFutureResult(result);
+    } finally {
+      setFutureLoading(false);
+    }
+  };
+
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <WelcomeCard />
@@ -63,6 +77,11 @@ export default function Dashboard() {
         <div className="space-y-6">
           <ProductivityScore />
           <AISummary />
+          <FutureConsequenceCard
+            loading={futureLoading}
+            result={futureResult}
+            onAnalyze={handleFutureAnalysis}
+          />
         </div>
       </div>
 

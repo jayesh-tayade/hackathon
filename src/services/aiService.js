@@ -6,47 +6,21 @@
 
 import { analyzeTasks } from "../utils/taskAnalyzer.js";
 import { generateGeminiResponse } from "./gemini.js";
+import { buildFutureConsequencePrompt } from "../prompts/futureConsequencePrompt.js";
 
 /**
- * Builds a plain-text prompt from a feature name and a task analysis summary.
+ * Returns the appropriate prompt string for the given feature.
  *
  * @param {string} featureName
  * @param {Object} analysis - Result of analyzeTasks()
  * @returns {string}
+ * @throws {Error} If the feature has no prompt implementation.
  */
-function buildPrompt(featureName, analysis) {
-  const {
-    totalTasks,
-    completedTasks,
-    pendingTasks,
-    overdueTasks,
-    highPriorityTasks,
-    dueToday,
-    upcomingTasks,
-    totalEstimatedHours,
-    workloadScore,
-    productivityScore,
-  } = analysis;
-
-  return `
-You are a productivity assistant helping a user manage their tasks.
-
-Feature requested: ${featureName}
-
-Current task summary:
-- Total tasks: ${totalTasks}
-- Completed: ${completedTasks.length}
-- Pending: ${pendingTasks.length}
-- Overdue: ${overdueTasks.length}
-- High priority: ${highPriorityTasks.length}
-- Due today: ${dueToday.length}
-- Upcoming (next 7 days): ${upcomingTasks.length}
-- Total estimated hours: ${totalEstimatedHours}
-- Workload score (0–100): ${workloadScore}
-- Productivity score (0–100): ${productivityScore}
-
-Based on this data, provide a helpful, concise response for the requested feature.
-`.trim();
+function getPrompt(featureName, analysis) {
+  if (featureName === "future-consequence") {
+    return buildFutureConsequencePrompt(analysis);
+  }
+  throw new Error("Feature prompt not implemented.");
 }
 
 /**
@@ -81,14 +55,13 @@ export async function generateAIResponse(featureName, tasks) {
       analysis: null,
       response: null,
       error: `Task analysis failed: ${analyzerError.message}`,
-      generatedAt: new Date().toISOString(),
     };
   }
 
   // --- Step 2: Build prompt ---
   let prompt;
   try {
-    prompt = buildPrompt(feature, analysis);
+    prompt = getPrompt(feature, analysis);
   } catch (promptError) {
     return {
       success: false,
@@ -96,7 +69,6 @@ export async function generateAIResponse(featureName, tasks) {
       analysis,
       response: null,
       error: `Prompt construction failed: ${promptError.message}`,
-      generatedAt: new Date().toISOString(),
     };
   }
 
@@ -111,7 +83,6 @@ export async function generateAIResponse(featureName, tasks) {
       analysis,
       response: null,
       error: `Gemini request failed: ${geminiError.message}`,
-      generatedAt: new Date().toISOString(),
     };
   }
 
@@ -121,6 +92,5 @@ export async function generateAIResponse(featureName, tasks) {
     feature,
     analysis,
     response,
-    generatedAt: new Date().toISOString(),
   };
 }
