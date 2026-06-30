@@ -109,7 +109,7 @@ Tasks are automatically grouped into:
 
 # 🖼️ Screenshots
 
-> Replace these placeholders with your screenshots.
+
 
 | Dashboard | AI Insights |
 |-----------|-------------|
@@ -130,19 +130,27 @@ Tasks are automatically grouped into:
 ```mermaid
 flowchart LR
 
-User --> ReactApp
+    User([User])
 
-ReactApp --> FirebaseAuth
+    React[React + Vite Frontend]
 
-ReactApp --> Firestore
+    Auth[Firebase Authentication]
 
-ReactApp --> GeminiAPI
+    Firestore[(Cloud Firestore)]
 
-Firestore --> ReactApp
+    Gemini[Google Gemini API]
 
-GeminiAPI --> ReactApp
+    Hosting[Firebase Hosting]
 
-ReactApp --> FirebaseHosting
+    User --> React
+    React --> Auth
+    React --> Firestore
+    React --> Gemini
+
+    Firestore --> React
+    Gemini --> React
+
+    React --> Hosting
 ```
 
 ---
@@ -276,7 +284,7 @@ npm run build
 D. Y. Patil College of Engineering, Akurdi
 
 ---
-    
+
 ---
 
 <div align="center">
