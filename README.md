@@ -118,7 +118,7 @@ Tasks are automatically grouped into:
 
 | Tasks | Timeline |
 |-------|----------|
-| ![](docs/screenshots/tasks.png) | ![](docs/screenshots/timeline.png) |
+| ![](docs/screenshots/tasks.png) | ![](docs/screenshots/timeline1.png) |
 
 | Settings |
 |----------|
