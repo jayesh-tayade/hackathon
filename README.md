@@ -10,6 +10,7 @@ Chronos doesn't just remind you—it analyzes your workload, predicts risks, and
 <br>
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Project-blue?style=for-the-badge)](https://chronos-46e9a.web.app/)
+[![Documentation](https://img.shields.io/badge/📄_Documentation-Project_Doc-0F9D58?style=for-the-badge&logo=googledocs&logoColor=white)](https://docs.google.com/document/d/1BCcDZTKDmDxxhfNlrvoO5WuPrpNqLJCpZuX57i-1aWc/edit?usp=sharing)
 [![GitHub](https://img.shields.io/badge/Repository-Source_Code-black?style=for-the-badge&logo=github)](https://github.com/jayesh-tayade/hackathon)
 
 <br>
