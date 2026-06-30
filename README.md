@@ -266,6 +266,25 @@ npm run build
 
 ---
 
+---
+
+# 📄 Documentation
+
+A detailed project report containing:
+
+- Problem Statement
+- Solution Overview
+- System Architecture
+- Feature Walkthrough
+- Google Technologies Used
+- Screenshots
+- Future Scope
+
+📘 **Project Documentation:**  
+https://docs.google.com/document/d/1BCcDZTKDmDxxhfNlrvoO5WuPrpNqLJCpZuX57i-1aWc/edit?usp=sharing
+
+---
+
 # 🔮 Future Scope
 
 - 📅 Google Calendar Integration
