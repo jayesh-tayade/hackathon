@@ -116,13 +116,13 @@ Tasks are automatically grouped into:
 |-----------|-------------|
 | ![](docs/screenshots/dashboard.png) | ![](docs/screenshots/ai-insights.png) |
 
-| Tasks | Timeline |
-|-------|----------|
-| ![](docs/screenshots/tasks.png) | ![](docs/screenshots/timeline1.png) |
+| Tasks |
+|-------|
+| ![](docs/screenshots/tasks.png) | 
 
-| Settings |
-|----------|
-| ![](docs/screenshots/settings.png) |
+| Settings | Timeline |
+|----------|----------|
+| ![](docs/screenshots/settings.png) | ![](docs/screenshots/timeline1.png) |
 
 ---
 
